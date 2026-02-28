@@ -1,32 +1,36 @@
 You are a senior Java architect and technical documentation engineer.
 
-Your task is to generate structured, enterprise-grade documentation for this repository, 
-a Java technical analysis and trading strategy framework.
+Your task is to generate structured, enterprise-grade documentation 
+for this repository (ta4j), a Java technical analysis and trading strategy framework.
 
-You must generate documentation for three personas:
-
+The documentation must serve three personas:
 1. Architect
 2. Tech Lead
 3. Developer
 
-CRITICAL RULES
+In addition to horizontal architecture documentation,
+you MUST also produce vertical slice documentation
+that traces end-to-end feature flows.
+
+------------------------------------------------------------
+GLOBAL RULES
+------------------------------------------------------------
 
 - Only describe behavior visible in code.
 - Do NOT hallucinate features.
 - If unclear, mark: "Ambiguity – needs maintainer clarification".
 - Reference real class names and packages.
 - Distinguish interfaces vs implementations.
-- Avoid repeating README unless expanding technically.
-- Do not explain trading theory unless implemented in code.
+- Avoid generic language.
 - Do not assume thread safety unless visible.
 - Do not assume performance characteristics without evidence.
-
+- Do not explain financial theory unless implemented in code.
 
 ------------------------------------------------------------
-STEP 1 — REPOSITORY STRUCTURAL ANALYSIS
+STEP 1 — REPOSITORY STRUCTURE (HORIZONTAL VIEW)
 ------------------------------------------------------------
 
-Analyze the repository and produce:
+Analyze and produce:
 
 1. Folder → Responsibility table
 2. Package classification:
@@ -34,16 +38,15 @@ Analyze the repository and produce:
    - Indicators
    - Rules
    - Strategies
-   - Backtesting components
+   - Backtesting
    - Utilities
    - Tests
 3. Identify:
-   - Entry points
    - Public APIs
    - Extension points
-4. High-level package interaction explanation
+   - Dependency direction
 
-Output section:
+Output:
 
 # Repository Structure
 # Package Responsibilities
@@ -51,23 +54,20 @@ Output section:
 
 
 ------------------------------------------------------------
-STEP 2 — DOMAIN MODEL EXTRACTION
+STEP 2 — DOMAIN MODEL (HORIZONTAL ABSTRACTIONS)
 ------------------------------------------------------------
 
-From core domain packages:
+Extract:
 
-Identify and describe:
-
-- Primary entities (e.g., BarSeries, Indicator, Rule, Strategy)
-- Their responsibilities
-- Key interfaces and abstractions
-- Inheritance hierarchies
-- Composition patterns
-- Design patterns used (Strategy, Composite, Decorator, etc.)
+- Primary entities (BarSeries, Indicator, Rule, Strategy, etc.)
+- Abstraction hierarchies
+- Inheritance trees
+- Composition relationships
+- Design patterns used
 - Stateful vs stateless components
-- Numeric abstraction model (e.g., Num handling)
+- Numeric abstraction model
 
-Output section:
+Output:
 
 # Domain Model
 ## Core Entities
@@ -77,140 +77,171 @@ Output section:
 
 
 ------------------------------------------------------------
-STEP 3 — RUNTIME EXECUTION MODEL
+STEP 3 — RUNTIME FLOW
 ------------------------------------------------------------
 
 Explain execution flow:
 
-- How a BarSeries is created and consumed
-- Indicator evaluation lifecycle
-- Rule evaluation lifecycle
 - Strategy construction
-- Backtesting execution flow
-- Data flow: BarSeries → Indicator → Rule → Strategy → Record
+- Indicator chaining
+- Rule evaluation
+- Backtesting execution
+- Data flow:
+  BarSeries → Indicator → Rule → Strategy → TradingRecord
 
-Output section:
+Output:
 
 # Runtime Flow
 ## Object Lifecycle
 ## Evaluation Sequence
-## Data Flow Explanation
+## Data Flow
 
 
 ------------------------------------------------------------
-STEP 4 — EXTENSION MODEL
+STEP 4 — VERTICAL SLICING DOCUMENTATION (MANDATORY)
 ------------------------------------------------------------
 
-Identify extension mechanisms:
+Identify 3–5 meaningful vertical slices (end-to-end flows).
 
-- Creating a custom Indicator
-- Creating a custom Rule
-- Creating a custom Strategy
-- Custom BarSeries implementations
-- Numeric system customization (if supported)
+Examples:
+- Indicator evaluation slice
+- Rule evaluation slice
+- Strategy execution slice
+- Backtesting slice
+- Custom indicator extension slice
+
+For each vertical slice:
+
+1. Entry point (class/method)
+2. Participating classes (ordered)
+3. Interfaces involved
+4. Data transformations
+5. State mutations (if any)
+6. Extension points inside the slice
+7. Error handling behavior (if visible)
+8. Test coverage references (if present)
+
+Output:
+
+# Vertical Slices
+
+## Slice 1 — Indicator Evaluation
+- Flow diagram (text-based)
+- Participating classes
+- Call chain
+- Data propagation
+
+## Slice 2 — Strategy Execution
+...
+
+Do NOT mix horizontal layering explanation here.
+Focus strictly on end-to-end traversal.
+
+
+------------------------------------------------------------
+STEP 5 — EXTENSION MODEL
+------------------------------------------------------------
+
+Explain:
+
+- How to create custom Indicator
+- How to create custom Rule
+- How to create custom Strategy
+- Custom BarSeries integration
+- Numeric system customization
 
 For each:
 - Required interfaces
 - Mandatory methods
+- Internal expectations
 - Common pitfalls
-- Minimal example referencing actual interfaces
 
-Output section:
+Output:
 
 # Extension Guide
-## Custom Indicator
-## Custom Rule
-## Custom Strategy
-## Integration Patterns
 
 
 ------------------------------------------------------------
-STEP 5 — PERSONA-SPECIFIC DOCUMENTATION
+STEP 6 — PERSONA-SPECIFIC DOCUMENTATION
 ------------------------------------------------------------
-
-Generate three clearly separated sections.
 
 ============================================================
 ARCHITECT VIEW
 ============================================================
 
-# Architecture Overview
+Focus on:
 
-Include:
-
-- Framework purpose
 - Architectural layering
-- Core abstractions
-- Dependency rules
+- Abstraction boundaries
+- Dependency direction
+- Vertical slice integrity
+- Coupling analysis
 - Extension boundaries
-- Internal coupling analysis
 - Design trade-offs
-- Potential architectural risks
-- Observations about scalability or complexity
+- Scalability observations
+- Architectural risks
 
-Focus on system structure, not usage examples.
+Output:
+# Architecture Overview
 
 
 ============================================================
 TECH LEAD VIEW
 ============================================================
 
-# Technical Leadership Guide
+Focus on:
 
-Include:
-
-- When to use ta4j
-- Integration patterns
-- Performance considerations (only if code-evident)
-- Memory model considerations
-- Testing model
-- Backtesting model explanation
-- Customization strategy
+- Integration strategy
+- Backtesting workflow
+- Performance considerations (code-visible only)
+- Testing strategy
+- Extension governance
+- Safe customization patterns
+- Vertical slice ownership
 - Common misuse patterns
-- Limitations visible in code
+- Operational considerations
 
-Focus on operational and integration decisions.
+Output:
+# Technical Leadership Guide
 
 
 ============================================================
 DEVELOPER VIEW
 ============================================================
 
-# Developer Guide
+Focus on:
 
-Include:
-
-- Installation
 - Minimal working example
-- Creating Indicators
-- Creating Rules
-- Creating Strategies
-- Backtesting example
-- Debugging tips
-- Common mistakes
+- How to build a complete vertical slice
+- Creating Indicators, Rules, Strategies
+- Debugging flow across slice
+- Unit testing slices
 - Extension checklist
 
-Focus on implementation clarity.
+Output:
+# Developer Guide
 
 
 ------------------------------------------------------------
-STEP 6 — DIAGRAMS (TEXT-BASED)
+STEP 7 — DIAGRAMS
 ------------------------------------------------------------
 
 Generate:
 
-1. C4 Level 2 container-style explanation (text only)
-2. PlantUML class diagram of core abstractions
-3. Sequence diagram for Strategy evaluation
+1. C4 Level 2 explanation (text)
+2. PlantUML class diagram (core abstractions)
+3. Sequence diagram for:
+   - Strategy execution slice
+   - Indicator evaluation slice
 
-Do not invent components not present in code.
+Do not invent components.
 
 
 ------------------------------------------------------------
 FINAL OUTPUT STRUCTURE
 ------------------------------------------------------------
 
-Produce documentation in Markdown format with the following structure:
+Produce Markdown files:
 
 /docs
     architecture.md
@@ -218,12 +249,12 @@ Produce documentation in Markdown format with the following structure:
     developer-guide.md
     runtime-model.md
     extension-guide.md
+    vertical-slices.md
     diagrams.puml
 
-Keep each persona guide logically separated.
+Avoid duplication across documents.
 
-Avoid duplication across sections.
-
+Ensure vertical slicing section explicitly maps to runtime and domain model.
 
 ------------------------------------------------------------
 QUALITY CHECK BEFORE COMPLETION
@@ -231,11 +262,12 @@ QUALITY CHECK BEFORE COMPLETION
 
 Verify:
 
-- No hallucinated features
-- No generic filler explanations
-- Clear references to real packages/classes
-- Clear separation of persona concerns
-- Mark ambiguities explicitly
-- Do not exceed what code supports
+- No hallucinated functionality
+- No generic filler
+- Real class/package references
+- Clear separation:
+    Horizontal Architecture vs Vertical Slices
+- Ambiguities clearly marked
+- Personas properly segmented
 
 End of instructions.
